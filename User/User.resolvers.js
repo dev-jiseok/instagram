@@ -49,7 +49,7 @@ export default {
       const {
         username
       } = args;
-      return await client.user.findFirst({
+      return await client.user.findUnique({
         where: { username }
       });
     }
