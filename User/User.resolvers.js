@@ -40,6 +40,16 @@ export default {
       } catch (e) {
         return e;
       }
+    },
+    login: async (_, args) => {
+      const { username, password } = args;
+      const existUser = await client.user.findUnique({ where: username });
+      if (!existUser) {
+        return {
+          ok: false,
+          error: "존재하지 않는 사용자입니다."
+        }
+      }
     }
   },
   Query: {
