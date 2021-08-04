@@ -13,6 +13,38 @@ export default {
           }
         }
       }
-    })
+    }),
+    isMine: ({ userId }, _, { loggedInUser }) => {
+      if (!loggedInUser) {
+        return false;
+      }
+      return userId === loggedInUser.id;
+    },
+  },
+  Hashtag: {
+    photos: ({ id }, { page }, { loggedInUser }) => {
+      if (!loggedInUser) {
+        return false;
+      }
+      return client.hashtag.findUnique({
+        where: {
+          id
+        }
+      }).photos({
+        take: 5,
+        skip: (page - 1) * 5
+      });
+    },
+    totalPhotos: ({ id }) => {
+      return client.photo.count({
+        where: {
+          hashtags: {
+            some: {
+              id
+            }
+          }
+        }
+      });
+    }
   }
 }
